@@ -1,5 +1,6 @@
 package com.example.profileui
 
+import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -15,15 +16,14 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             ProfileUITheme {
-
+                ProfileScreen()
             }
         }
     }
 }
 
-
-
-@Preview(showSystemUi = true)
+@Preview(name = "Light Mode",showSystemUi = true)
+@Preview(name = "Dark Mode",uiMode = UI_MODE_NIGHT_YES,showSystemUi = true)
 @Composable
 fun DefaultPreview() {
     ProfileUITheme {
