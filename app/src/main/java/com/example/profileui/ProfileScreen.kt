@@ -3,6 +3,7 @@ package com.example.profileui
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
@@ -14,13 +15,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.TextUnit
@@ -35,11 +39,20 @@ fun ProfileScreen() {
         TopBar(name = "faresmohand_official     ",modifier = Modifier.padding(10.dp))
         Spacer(modifier = Modifier.height(4.dp))
         ProfileSection()
-        Spacer(modifier = Modifier.height(10.dp))
+        Spacer(modifier = Modifier.height(5.dp))
         ButtonSection(modifier = Modifier
             .fillMaxWidth()
             .padding(20.dp))
-        Spacer(modifier = Modifier.height(10.dp))
+        Spacer(modifier = Modifier.height(5.dp))
+        HighlightSection(
+            highlights = listOf(
+                StoryHighlight(painterResource(id = R.drawable.livre),"Kitabe"),
+                StoryHighlight(painterResource(id = R.drawable.powerbuildingv1),"building v1"),
+                StoryHighlight(painterResource(id = R.drawable.powerbuildingv2),"building v2"),
+                StoryHighlight(painterResource(id = R.drawable.powerbuildingv3),"building v3"),
+            ),
+            modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp)
+        )
     }
 }
 
@@ -131,7 +144,8 @@ fun RoundImage(
                 shape = CircleShape
             )
             .padding(3.dp)
-            .clip(CircleShape)
+            .clip(CircleShape),
+        contentScale = ContentScale.Crop
     )
 }
 
@@ -251,22 +265,17 @@ fun ProfileDescription(
 fun ButtonSection(
     modifier: Modifier = Modifier
 ) {
-    val minWidth = 300.dp
     val height = 30.dp
     Row(
         horizontalArrangement = Arrangement.Start,
         modifier = modifier
     ) {
         ActionButton(
+            imageVector = Icons.Default.KeyboardArrowDown,
             text = "Modifier profil",
             modifier = Modifier
-                .defaultMinSize(minWidth)
+                .fillMaxWidth()
                 .height(height)
-        )
-        Spacer(modifier = Modifier.width(10.dp))
-        ActionButton(
-            imageVector = Icons.Default.KeyboardArrowDown,
-            modifier = Modifier.size(height)
         )
     }
 }
@@ -302,6 +311,32 @@ fun ActionButton(
                 contentDescription = null,
                 tint = Color.Black
             )
+        }
+    }
+}
+
+@Composable
+fun HighlightSection(
+    modifier: Modifier = Modifier,
+    highlights: List<StoryHighlight>
+) {
+    LazyRow(modifier = modifier) {
+        items(highlights.size) { index ->
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center,
+                modifier = Modifier.padding(end = 15.dp)
+            ) {
+                RoundImage(
+                    image = highlights[index].image,
+                    modifier = Modifier.size(70.dp).clip(CircleShape)
+                )
+                Text(
+                    text = highlights[index].text,
+                    overflow = TextOverflow.Ellipsis,
+                    textAlign = TextAlign.Center
+                )
+            }
         }
     }
 }
